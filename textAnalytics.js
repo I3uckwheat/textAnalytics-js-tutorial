@@ -27,8 +27,10 @@ function analyze(){
   const output = document.getElementById("output");
 
   fetch(request).then(response => {
-    if(response.ok) return response.json();
-    return Promise.reject(new Error(response.statusText));
+    if(response.ok) {
+      return response.json();
+    } else {
+    return Promise.reject(new Error(response.statusText))}
   }).then(response => {
     output.innerHTML = "Total Key Phrases: " +
     response.documents[0].keyPhrases.length +
