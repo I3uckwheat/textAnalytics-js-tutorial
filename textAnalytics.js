@@ -1,43 +1,45 @@
+
+
 document.getElementById("analyzeButton").addEventListener("click", analyze);
 
 function analyze(){
-  const reqBody = {
-    "documents": [
-      {
-        "language":"en",
-        "id": 1,
-        "text": document.getElementById("input").value
-      }
-    ]
-  }
 
-  const myHeader = new Headers({
-    "Content-Type": "application/json",
-    "Ocp-Apim-Subscription-Key": "9ab6f5a83b934a84bbab25edaa5c2418"
-  });
 
-  const initObject = {
-    method: "POST",
-    body: JSON.stringify(reqBody),
-    headers: myHeader
-  }
+    var reqBody = {
+        "documents": [
+            {
+            "language":"en",
+            "id" : 1,
+            "text": document.getElementById("input").value
+            }
+        ]
+    };
 
-  const request = new Request("https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/keyPhrases", initObject)
+    var myHeader =  new Headers({
+        'Content-Type': 'application/json',
+        'Ocp-Apim-Subscription-Key':''
+    });
 
-  const output = document.getElementById("output");
+    var initObject = {
+        method: 'POST',
+        body: JSON.stringify(reqBody),
+        headers: myHeader
+    }
 
-  fetch(request).then(response => {
-    if(response.ok) {
-      return response.json();
-    } else {
-    return Promise.reject(new Error(response.statusText))}
-  }).then(response => {
-    output.innerHTML = "Total Key Phrases: " +
-    response.documents[0].keyPhrases.length +
-    "</br>" +
-    response.documents[0].keyPhrases;
-  }).catch(error => {
-    alert(error);
-    output.innerHTML = "";
-  })
+    var request = new Request('https://westcentralus.api.cognitive.microsoft.com/text/analytics/v2.0/keyPhrases', initObject);
+
+    fetch(request).then(function(response){
+        if(response.ok){
+            return response.json();
+        }
+        else{
+            return Promise.reject(new Error(response.statusText));
+        }
+    }).then(function(response){
+        document.getElementById("output").innerHTML = "Total Key Phrases: " + response.documents[0].keyPhrases.length + "</br>" + response.documents[0].keyPhrases;
+    }).catch(function(err){
+        alert(err);
+        document.getElementById("output").innerHTML = "";
+    });
+
 }
